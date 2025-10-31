@@ -15,30 +15,30 @@ function App() {
         setTasks(response.data)
       })
       .catch(error => {
-        alert(error.response.data ? error.response.data.message : error)
+        alert(error.response?.data?.message || error)
       })
   }, [])
 
   const addTask = () => {
-    const newTask = { description: task }
+    if (!task.trim()) return
 
-    axios.post(url + "/create", {task: newTask})
+    axios.post(url + "/create", { task })
       .then(response => {
-        setTasks([...tasks,response.data])
+        setTasks([...tasks, response.data])
         setTask('')
       })
       .catch(error => {
-        alert(error.response ? error.response.data.error.message : error)
+        alert(error.response?.data?.error?.message || error)
       })
   }
 
-  const deleteTask = (deleted) => {
-    axios.delete(url + "/delete/" + deleted)
-      .then(response => {
-        setTasks(tasks.filter(item => item.id !== deleted))
+  const deleteTask = (deletedId) => {
+    axios.delete(`${url}/delete/${deletedId}`)
+      .then(() => {
+        setTasks(tasks.filter(item => item.id !== deletedId))
       })
       .catch(error => {
-        alert(error.response ? error.response.data.error.message : error)
+        alert(error.response?.data?.error?.message || error)
       })
   }
 
@@ -59,13 +59,12 @@ function App() {
         />
       </form>
       <ul>
-        {
-          tasks.map(item => (
-            <Row item={item} key={item.id} deleteTask={deleteTask} />
-          ))
-        }
+        {tasks.map(item => (
+          <Row item={item} key={item.id} deleteTask={deleteTask} />
+        ))}
       </ul>
     </div>
   )
 }
+
 export default App
