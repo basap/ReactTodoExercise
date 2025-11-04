@@ -23,8 +23,9 @@ function App() {
 
   const addTask = () => {
     const headers = {headers: {Authorization: user.token}}
+    const newTask = { description: task }
 
-    axios.post(url + "/create", { task },headers)
+    axios.post(url + "/create", { task: newTask },headers)
       .then(response => {
         setTasks([...tasks, response.data])
         setTask('')
