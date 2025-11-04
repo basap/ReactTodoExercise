@@ -25,7 +25,7 @@ describe("Testing basic database functionality", () => {
                 "Content-Type": "application/json",
                 Authorization: token
             },
-            body: JSON.stringify({ task: newTask })
+            body: JSON.stringify({ task: { description: newTask } })
         })
         const data = await response.json()
         expect(response.status).to.equal(201)
